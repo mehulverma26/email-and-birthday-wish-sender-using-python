@@ -1,4 +1,4 @@
-'''import datetime
+"""import datetime
 import smtplib 
 from email.mime.multipart import MIMEMultipart 
 from email.mime.text import MIMEText 
@@ -55,12 +55,14 @@ for x in range(len(friends)):
         email=friends[x+1]
         subject="Hapy Birthday"
         message="Happy birthday to the best person in the world"
-        emailscript1(email,subject,message)'''
+        emailscript1(email,subject,message)"""
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import pandas as pd
 import datetime
+
+
 def body():
     lines = []
     while True:
@@ -69,36 +71,44 @@ def body():
             lines.append(line)
         else:
             break
-    text = '\n'.join(lines)
+    text = "\n".join(lines)
     return text
-a=input("enter your email id: ")
-b=input("enter the password: ")
-sub="Happy Birthday!!!"
-#mail_content = body()
-#The mail addresses and password
-df=pd.read_excel("D:\\FRIDAY\\birthday.xlsx") #file path for friends email and birthday
-today=datetime.datetime.now().strftime("%d-%m")
+
+
+a = input("enter your email id: ")
+b = input("enter the password: ")
+sub = "Happy Birthday!!!"
+# mail_content = body()
+# The mail addresses and password
+df = pd.read_excel(
+    "D:\\FRIDAY\\birthday.xlsx"
+)  # file path for friends email and birthday
+today = datetime.datetime.now().strftime("%d-%m")
 for index, item in df.iterrows():
-    bday=item['Birthday'].strftime("%d-%m")
-    if (today==bday):
-        c=item['Email']
+    bday = item["Birthday"].strftime("%d-%m")
+    if today == bday:
+        c = item["Email"]
 sender_address = a
 sender_pass = b
 receiver_address = c
-#Setup the MIME
+# Setup the MIME
 message = MIMEMultipart()
-message['From'] = sender_address
-message['To'] = receiver_address
-message['Subject'] = sub   #The subject line
-#The body and the attachments for the mail
-message.attach(MIMEText("""Happy Birthday to the best person on the planet
+message["From"] = sender_address
+message["To"] = receiver_address
+message["Subject"] = sub  # The subject line
+# The body and the attachments for the mail
+message.attach(
+    MIMEText(
+        """Happy Birthday to the best person on the planet
 regards,
-Mehul"""
-, 'plain'))
-#Create SMTP session for sending the mail
-session = smtplib.SMTP('smtp.gmail.com', 587) #use gmail with port
-session.starttls() #enable security
-session.login(sender_address, sender_pass) #login with mail_id and password
+Mehul""",
+        "plain",
+    )
+)
+# Create SMTP session for sending the mail
+session = smtplib.SMTP("smtp.gmail.com", 587)  # use gmail with port
+session.starttls()  # enable security
+session.login(sender_address, sender_pass)  # login with mail_id and password
 text = message.as_string()
 session.sendmail(sender_address, receiver_address, text)
 session.quit()
